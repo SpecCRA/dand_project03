@@ -18,25 +18,46 @@ and lat values are floats
 
 INPUT_FILE = "sf_sunset_district.osm"
 
+tree = ET.parse(INPUT_FILE)
+root = tree.getroot()
+
+bad_ids = []
+bad_uids = []
+bad_street_names = {} # Using a dictionary to store counts
+bad_loc_values = [] # Stores bad lon and lat values
+bad_postcodes = {} # Dictionary to store counts again
+
 expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", "Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
 
-def check_int(string):
+def audit_id(string): 
     try:
         int(string)
     except:
-        continue
-def check_float(string):
-    try:
-        float(string):
-    except:
-        continue
+        bad_ids.append(string)
 
-def audit_street_name(elem):
-    if elem.atrrib['k'] == "addr:stret":
-        pass
+def audit_lon_lat(string):
+    try:
+        float(string)
+    except:
+        bad_loc_values.append(string)
+
+def audit_street_name(string):
+    words = string.split()
+    for word in words:
+        if len(word) == 1:
+            print "Bad street name: " + string
+    if words[-1] not in expected_street_names:
+        print "Inconsistent street name: " + string
+    pass
+
+def audit_postcode(string):
+    if string.startswith("941"):
+        return string
+    else:
+        print "Bad post code: " + string
 
 def audit_file(filename):
-    # first check if IDs and UIDs are integers
+    # This function audits the input file
     for event, elem in ET.iterparse(filename, events = ("start",)):
         if elem.tag == "node" or elem.tag == "way":
             print event
