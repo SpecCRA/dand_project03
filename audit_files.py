@@ -92,6 +92,7 @@ def audit_file(filename):
     # This function audits the input file
     for event, elem in ET.iterparse(filename, events = ("start",)):
         if elem.tag == "node" or elem.tag == "way":
+            continue
             print event
             print elem
 
@@ -102,8 +103,10 @@ def print_values(ids, loc_values, street_names, postcodes):
 
     for n in loc_values:
         print "Bad location value: " + str(n)
+    print "Bad street names: \n"
     pprint.pprint(street_names, width=1)
+    print "Bad postcodes: \n"
     pprint.pprint(postcodes, width=1)
 
-audit_file(INPUT_FILE)
-print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
+#audit_file(INPUT_FILE)
+#print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
