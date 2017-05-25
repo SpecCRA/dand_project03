@@ -16,7 +16,7 @@ and lat values are floats
 5. Correct postal code (Starts with 941 for San Francisco)
 """
 
-INPUT_FILE = "sf_sunset_district.osm"
+INPUT_FILE = "seattle_ballard.xml"
 
 tree = ET.parse(INPUT_FILE)
 root = tree.getroot()
@@ -25,6 +25,12 @@ bad_ids = []
 bad_street_names = {} # Using a dictionary to store counts
 bad_loc_values = [] # Stores bad lon and lat values
 bad_postcodes = {} # Dictionary to store counts again
+
+NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
+NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type']
+WAY_FIELDS = ['id', 'user', 'uid', 'version', 'changeset', 'timestamp']
+WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
+WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
 expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", "Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
 
@@ -89,24 +95,54 @@ def audit_postcode(string):
             bad_postcodes[string] = 1
 
 def audit_file(filename):
-    # This function audits the input file
+    """
+    This function audits the XML input file to check IDs, UIDs, latitude, longitude, street
+    names, and post codes.
+    """
     for event, elem in ET.iterparse(filename, events = ("start",)):
         if elem.tag == "node" or elem.tag == "way":
-            continue
-            print event
-            print elem
+            #print event
+            #print elem
+            for attrName, attrValue in elem.attrib.items():
+                if attrName == "id":
+                    audit_id(attrValue)
+                elif attrName == "uid":
+                    audit_id(attrValue)
+                elif attrName == "lat":
+                    audit_lon_lat(attrValue)
+                elif attrName == "lon":
+                    audit_lon_lat(attrValue)
+                else:
+                    continue
+                
+                for i in elem.iter("tag"):
+                    if i.attrib["k"] == "addr:street":
+                        audit_street_name(i.attrib["v"])
+                    #elif i.attrib["k"] == "addr:postcode":
+                        #audit_postcode(i.attrib["v"])
+                    else:
+                        continue
 
 def print_values(ids, loc_values, street_names, postcodes):
+    """
+    This function labels and prints out bad values for further evaluation on
+    how to clean each value or kind of value.
+    """
+    if len(ids) > 0:
+        for n in ids:
+            print "Bad id value: " + str(n)
+    else:
+        print "No bad IDs or UIDs."
 
-    for n in ids:
-        print "Bad id value: " + str(n)
-
-    for n in loc_values:
-        print "Bad location value: " + str(n)
+    if len(loc_values) > 0:
+        for n in loc_values:
+            print "Bad location value: " + str(n)
+    else:
+        print "No bad location values."
     print "Bad street names: \n"
     pprint.pprint(street_names, width=1)
     print "Bad postcodes: \n"
     pprint.pprint(postcodes, width=1)
 
-#audit_file(INPUT_FILE)
-#print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
+audit_file(INPUT_FILE)
+print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
