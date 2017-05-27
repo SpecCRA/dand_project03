@@ -16,7 +16,7 @@ and lat values are floats
 5. Correct postal code (Starts with 941 for San Francisco)
 """
 
-INPUT_FILE = "sf_sunset_district.osm"
+INPUT_FILE = "san_francisco.osm"
 
 tree = ET.parse(INPUT_FILE)
 root = tree.getroot()
