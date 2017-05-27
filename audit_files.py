@@ -16,7 +16,7 @@ and lat values are floats
 5. Correct postal code (Starts with 941 for San Francisco)
 """
 
-INPUT_FILE = "seattle_ballard.xml"
+INPUT_FILE = "san_francisco.osm"
 
 tree = ET.parse(INPUT_FILE)
 root = tree.getroot()
@@ -33,6 +33,9 @@ WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
 expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", "Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
+
+# create a regex to check N, S, W, E, NW, NE, SW, SE for directional street names
+check_direction = re.compile(r'N|S|W|E|NW|NE|SW|SE')
 
 def audit_id(string):
     """
@@ -62,22 +65,19 @@ def audit_lon_lat(string):
 
 def audit_street_name(string):
     """
-    Takes a string and checks the street name with the standard from the expected
-    street names list. It also checks if any word in the street name is one letter
-    to check for abbreviations in directions.
+    audit_street_name takes a string as an argument. The first part 
+    checks if the street name has a directional abbreviation. The second
+    part compares the last word of the street name to a list of expected
+    street names.
 
     Bad street names get appended to a dictioanry with a count.
     """
     words = string.split()
-    for word in words:
-        if len(word) == 1: # checks for one letter words
-            print "Bad street name: " + string
-    if words[-1] not in expected_street_names:
+    if check_direction.search(string) or (words[-1] not in expected_street_names):
         try:
-            bad_street_names[string] += 1
+            bad_street_names[string] += 1 
         except:
             bad_street_names[string] = 1
-        #print "Inconsistent street name: " + string
 
 def audit_postcode(string):
     """
@@ -144,5 +144,5 @@ def print_values(ids, loc_values, street_names, postcodes):
     print "Bad postcodes: \n"
     pprint.pprint(postcodes, width=1)
 
-audit_file(INPUT_FILE)
-print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
+#audit_file(INPUT_FILE)
+#print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
