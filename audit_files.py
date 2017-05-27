@@ -114,12 +114,15 @@ def audit_file(filename):
                     audit_lon_lat(attrValue)
                 else:
                     continue
-                
+               """
+               This part of the function checks children named 'tag' in order
+               to audit street names.
+               """
                 for i in elem.iter("tag"):
                     if i.attrib["k"] == "addr:street":
                         audit_street_name(i.attrib["v"])
-                    #elif i.attrib["k"] == "addr:postcode":
-                        #audit_postcode(i.attrib["v"])
+                    elif i.attrib["k"] == "addr:postcode":
+                        audit_postcode(i.attrib["v"])
                     else:
                         continue
 
