@@ -16,7 +16,7 @@ and lat values are floats
 5. Correct postal code (Starts with 941 for San Francisco)
 """
 
-INPUT_FILE = "san_francisco.osm"
+INPUT_FILE = "sf_sunset_district.osm"
 
 tree = ET.parse(INPUT_FILE)
 root = tree.getroot()
@@ -32,10 +32,11 @@ WAY_FIELDS = ['id', 'user', 'uid', 'version', 'changeset', 'timestamp']
 WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
-expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", "Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
+expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", \
+"Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
 
 # create a regex to check N, S, W, E, NW, NE, SW, SE for directional street names
-check_direction = re.compile(r'N|S|W|E|NW|NE|SW|SE')
+check_direction = re.compile(r'N\s|S\s|W\s|E\s|NW\s|NE\s|SW\s|SE\s')
 
 def audit_id(string):
     """
@@ -73,7 +74,22 @@ def audit_street_name(string):
     Bad street names get appended to a dictioanry with a count.
     """
     words = string.split()
-    if check_direction.search(string) or (words[-1] not in expected_street_names):
+    if words[-1] not in expected_street_names:
+        """
+        Instead of appending the entire street name, I just want to look at the
+        bad street name label.
+        """
+        try:
+            bad_street_names[words[-1]] += 1
+        except:
+            bad_street_names[words[-1]] = 1
+
+    if check_direction.search(string):
+        """
+        Here, I want to see where in the street name a directional abbreviation
+        may be to assess whether the street names needs cleaning before adding
+        to the database.
+        """
         try:
             bad_street_names[string] += 1 
         except:
@@ -114,10 +130,10 @@ def audit_file(filename):
                     audit_lon_lat(attrValue)
                 else:
                     continue
-               """
-               This part of the function checks children named 'tag' in order
-               to audit street names.
-               """
+                """
+                This next part iterates over the child tags to extract street names
+                and postcodes.
+                """
                 for i in elem.iter("tag"):
                     if i.attrib["k"] == "addr:street":
                         audit_street_name(i.attrib["v"])
@@ -147,5 +163,5 @@ def print_values(ids, loc_values, street_names, postcodes):
     print "Bad postcodes: \n"
     pprint.pprint(postcodes, width=1)
 
-#audit_file(INPUT_FILE)
-#print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
+audit_file(INPUT_FILE)
+print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
