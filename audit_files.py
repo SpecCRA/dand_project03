@@ -25,6 +25,7 @@ bad_ids = []
 bad_street_names = {} # Using a dictionary to store counts
 bad_loc_values = [] # Stores bad lon and lat values
 bad_postcodes = {} # Dictionary to store counts again
+full_street_names = {}
 
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
 NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type']
@@ -34,7 +35,7 @@ WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
 expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", \
 "Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row", "Alameda",\
-"Parkway", "Real"]
+"Parkway", "Real", "Broadway", "Embarcadero", "Alameda"]
 
 # create a regex to check N, S, W, E, NW, NE, SW, SE for directional street names
 check_direction = re.compile(r'N\s|S\s|W\s|E\s|NW\s|NE\s|SW\s|SE\s')
@@ -81,6 +82,10 @@ def audit_street_name(string):
         bad street name label.
         """
         try:
+            full_street_names[string] += 1
+        except:
+            full_street_names[string] = 1
+        try:
             bad_street_names[words[-1]] += 1
         except:
             bad_street_names[words[-1]] = 1
@@ -118,9 +123,8 @@ def audit_file(filename):
     """
     for event, elem in ET.iterparse(filename, events = ("start",)):
         if elem.tag == "node" or elem.tag == "way":
-            #print event
-            #print elem
             for attrName, attrValue in elem.attrib.items():
+                # iterate through nodes and ways to audit values
                 if attrName == "id":
                     audit_id(attrValue)
                 elif attrName == "uid":
@@ -138,8 +142,8 @@ def audit_file(filename):
                 for i in elem.iter("tag"):
                     if i.attrib["k"] == "addr:street":
                         audit_street_name(i.attrib["v"])
-                    elif i.attrib["k"] == "addr:postcode":
-                        audit_postcode(i.attrib["v"])
+                    #elif i.attrib["k"] == "addr:postcode":
+                        #audit_postcode(i.attrib["v"])
                     else:
                         continue
 
@@ -159,8 +163,13 @@ def print_values(ids, loc_values, street_names, postcodes):
             print "Bad location value: " + str(n)
     else:
         print "No bad location values."
+
     print "Bad street names: \n"
     pprint.pprint(street_names, width=1)
+
+    print "Full street names: \n"
+    pprint.pprint(full_street_names, width=1)
+
     print "Bad postcodes: \n"
     pprint.pprint(postcodes, width=1)
 
