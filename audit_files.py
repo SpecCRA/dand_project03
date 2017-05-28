@@ -33,7 +33,8 @@ WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
 expected_street_names = ["Street", "Avenue", "Court", "Drive", "Boulevard", "Way", "Terrace", \
-"Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row"]
+"Alley", "Place", "Lane", "Plaza", "Hill", "Circle", "Road", "Row", "Alameda",\
+"Parkway", "Real"]
 
 # create a regex to check N, S, W, E, NW, NE, SW, SE for directional street names
 check_direction = re.compile(r'N\s|S\s|W\s|E\s|NW\s|NE\s|SW\s|SE\s')
@@ -102,7 +103,7 @@ def audit_postcode(string):
 
     Bad values get added to a dictionary with a count.
     """
-    if string.startswith("941"):
+    if string.startswith("941") or string == "94016":
         return string
     else:
         try:
