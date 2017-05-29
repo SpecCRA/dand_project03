@@ -4,17 +4,21 @@ Van Ness is Van Ness Avenue
 Bridgeway is fine
 Cavalla Cay is fine, it's in Novato
 Caribe Isle - in Novato
-Fort Mason -> Fort Mason Center
 Remove #XXX from end of street names
 Ctr -> Center
 MILLSBRAE AVE -> Change capitialization 
-Remove Macdonald - probably typo for McDonalds, also not a street name
-Everything after street label shoudl be something else, like the suite, building labels
+MacDonald is MacDonald Avenue
+Everything after street label should be something else, like the suite, building labels
 Check "Mason" on mini
 Remove SF 80 PM 4.5 - probably input error here
 Broadway is just Broadway
 
-
 Postal code inconsistencies - input error with CA in front, outside of SF
 
 No bad IDs or UIDs
+
+node tag - highway crossings have [stop, traffic_signal, uncontrolled], turn restrictions
+
+check all amenity, cusine, shop values
+
+how many starbucks compared to other cafes?
