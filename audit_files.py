@@ -25,7 +25,8 @@ bad_ids = []
 bad_street_names = {} # Using a dictionary to store counts
 bad_loc_values = [] # Stores bad lon and lat values
 bad_postcodes = {} # Dictionary to store counts again
-full_street_names = {}
+full_street_names = {} # Dictionary to look at bad street names with counts
+amenity_values = {} # check amenities values to see if anything is funny
 
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
 NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type']
@@ -81,14 +82,8 @@ def audit_street_name(string):
         Instead of appending the entire street name, I just want to look at the
         bad street name label.
         """
-        try:
-            full_street_names[string] += 1
-        except:
-            full_street_names[string] = 1
-        try:
-            bad_street_names[words[-1]] += 1
-        except:
-            bad_street_names[words[-1]] = 1
+        add_to_dict(full_street_names, string)
+        add_to_dict(bad_street_names, words[-1])
 
     if check_direction.search(string):
         """
@@ -96,10 +91,7 @@ def audit_street_name(string):
         may be to assess whether the street names needs cleaning before adding
         to the database.
         """
-        try:
-            bad_street_names[string] += 1 
-        except:
-            bad_street_names[string] = 1
+        add_to_dict(bad_street_names, string)
 
 def audit_postcode(string):
     """
@@ -111,10 +103,21 @@ def audit_postcode(string):
     if string.startswith("941") or string == "94016":
         return string
     else:
-        try:
-            bad_postcodes[string] += 1
-        except:
-            bad_postcodes[string] = 1
+        add_to_dict(bad_postcodes, string)
+
+def add_amenity(string):
+    add_to_dict(amenity_values, string)
+
+def add_to_dict(dictionary, string):
+    """
+    This function adds to a selected dictionary with a count for 
+    each key.
+    """
+    try:
+        dictionary[string] += 1 
+    except:
+        dictionary[string] = 1 
+
 
 def audit_file(filename):
     """
@@ -144,6 +147,8 @@ def audit_file(filename):
                         audit_street_name(i.attrib["v"])
                     #elif i.attrib["k"] == "addr:postcode":
                         #audit_postcode(i.attrib["v"])
+                    elif i.attrib["k"] == "amenity":
+                        add_amenity(i.attrib["v"])
                     else:
                         continue
 
@@ -158,20 +163,25 @@ def print_values(ids, loc_values, street_names, postcodes):
     else:
         print "No bad IDs or UIDs."
 
+    print "\n"
+
     if len(loc_values) > 0:
         for n in loc_values:
             print "Bad location value: " + str(n)
     else:
         print "No bad location values."
 
-    print "Bad street names: \n"
+    print "\nBad street names: "
     pprint.pprint(street_names, width=1)
 
-    print "Full street names: \n"
+    print "\nFull street names: "
     pprint.pprint(full_street_names, width=1)
 
-    print "Bad postcodes: \n"
-    pprint.pprint(postcodes, width=1)
+    print "\nBad postcodes: "
+    pprint.pprint(postcodes, width=2)
+
+    print "\nAmenities counts: "
+    pprint.pprint(amenity_values, width=1)
 
 audit_file(INPUT_FILE)
 print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
