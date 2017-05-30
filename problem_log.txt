@@ -1,9 +1,6 @@
 Inconsistencies in street names - abbreviations, input error, parts outside of San Francisco, capitalizations
 
 Van Ness is Van Ness Avenue
-Bridgeway is fine
-Cavalla Cay is fine, it's in Novato
-Caribe Isle - in Novato
 Remove #XXX from end of street names
 Ctr -> Center
 MILLSBRAE AVE -> Change capitialization 
@@ -22,3 +19,42 @@ node tag - highway crossings have [stop, traffic_signal, uncontrolled], turn res
 check all amenity, cusine, shop values
 
 how many starbucks compared to other cafes?
+
+Group similar shops and cuisines together
+-if multiple, just take first one and group them
+equipment_rental and "equipment rental" should be gropued together
+dry_cleaner, dry_cleaners, dry_cleaning, dry_cleaning, drycleaner
+Cosmetics and cosmetics (capitilization difference)
+hairdresser, Hair salon
+nails, Nails salon
+tyres, tires, car_tires
+vitamin, vitamins
+wine, winery
+sport, sports
+cell_phone, cellphone
+remove "p" values
+community_center, community_centre
+remove "addr:housenumber" input error
+replace spaces with "_"
+
+subs/sandwiches to sandwich
+sandwich, sandwiches to sandwich
+smoothie, smoothies to smoothies
+peruvian-asian to peruvian
+frozen_yoghurt to frozen_yogurt
+donut, donuts to donuts
+dim_sum, dimsum to dim_sum
+crepe, crepes to crepes
+coffee, coffee1, coffee_shop to coffee_shop
+burger, burgers to burgers
+korean_food, korean_american
+bubble_tea, boba, Boba
+bail_bond, bail_service
+appliance, appliances
+"outdoor water sports and swim" to outdoor
+separate based on ; and take the first one
+
+remove _ if in beginning of string for cuisines
+
+Check singulars and plurals with regex
+Check capitalizations by lowering the string and cleaning

@@ -27,6 +27,9 @@ bad_loc_values = [] # Stores bad lon and lat values
 bad_postcodes = {} # Dictionary to store counts again
 full_street_names = {} # Dictionary to look at bad street names with counts
 amenity_values = {} # check amenities values to see if anything is funny
+shops = {} # keep count of shops and audit values 
+cuisines = {} # keep count of cuisines and audit values
+
 
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
 NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type']
@@ -105,9 +108,6 @@ def audit_postcode(string):
     else:
         add_to_dict(bad_postcodes, string)
 
-def add_amenity(string):
-    add_to_dict(amenity_values, string)
-
 def add_to_dict(dictionary, string):
     """
     This function adds to a selected dictionary with a count for 
@@ -148,7 +148,11 @@ def audit_file(filename):
                     #elif i.attrib["k"] == "addr:postcode":
                         #audit_postcode(i.attrib["v"])
                     elif i.attrib["k"] == "amenity":
-                        add_amenity(i.attrib["v"])
+                        add_to_dict(amenity_values, i.attrib["v"])
+                    elif i.attrib["k"] == "shop":
+                        add_to_dict(shops, i.attrib["v"])
+                    elif i.attrib["k"] == "cuisine":
+                        add_to_dict(cuisines, i.attrib["v"])
                     else:
                         continue
 
@@ -182,6 +186,12 @@ def print_values(ids, loc_values, street_names, postcodes):
 
     print "\nAmenities counts: "
     pprint.pprint(amenity_values, width=1)
+
+    print "\nShop counts: "
+    pprint.pprint(shops, width=1)
+
+    print "\nCuisine counts: "
+    pprint.pprint(cuisines, width=1)
 
 audit_file(INPUT_FILE)
 print_values(bad_ids, bad_loc_values, bad_street_names, bad_postcodes)
