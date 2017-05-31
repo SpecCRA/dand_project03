@@ -1,0 +1,67 @@
+Data cleaning notes
+
+Streets
+-Change Van Ness to Van Ness Avenue
+-Ctr - Center
+-MILLSBRAE AVE - change capitalization
+-MacDonald - MacDonald Ave
+-Avenue - Ave, Ave., Avenie, Avenue, avenue
+-Boulevard - Blvd, Blvd. 
+-Drive - Dr,
+-Highway- Hwy
+-Street - street, St, St.
+-3605 Telegraph to Telegraph Ave
+-Some streets are not capitalized properly
+-Alameda de las Pulgas - Alameda De Las Pulgas, Alameda De Las, Alameda de Las Pulgas, Alameda de las Pulgas
+-Cesar Chavez St St - remove one St and change St to Street
+-Hyde to Hyde Street
+-King to King Street
+-Vallejo, Vallejo street to Vallejo Street 
+-Plz to Plaza
+-Remove Wedemeyer, probably input error for Wedemeyer Bakery
+
+Pseudocode to remove things
+1. Split street into a list
+2. Find where the abbreviation is
+3. Pop it out
+4. Add proper abbreviation
+5. Join everything and return string
+
+Amenities and shops
+-singulars and plurals - probably with regex
+-dry_cleaner, dry_cleaners, dry_cleaning, drycleaner are all the same
+-capitalizations - lower all
+-tyres, tires, car_tires
+-nails, Nails salon
+-hairdresser, Hair salon
+-cell_phone, cellphone
+-optometry, optometrist 
+-community_center, community_centre
+-fountain, fountian - typo
+-remove fix
+-bail_bond, bail_service to bail_bond
+-“outdoor water sports and swim” to outdoor
+-bed, bedding
+-clothing, clothes
+-confectionary, confectionery
+-herb, herbs, herbalist to herbalist
+-pet_store, pet_supply to pet
+
+-sub/sandwiches, sandwich, sandwiches
+-dim_sum, dimsum
+-coffee, coffee1, coffee_shop
+-bubble_tea, boba, Boba to boba
+-korean_food to korean
+-vietnamnese to vietnamese
+-barbecue;korean is its own thing, make sure not to miscategorize it as regular barbecue
+-bbq to barbecue
+-california to californian
+-doughnut to donuts
+-lao, Lao, to laotian
+-
+
+Things to do
+-replace spaces with underscores
+-remove underscores if it’s first character in string
+-lower everything
+
