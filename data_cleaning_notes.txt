@@ -27,26 +27,28 @@ Pseudocode to remove things
 4. Add proper abbreviation
 5. Join everything and return string
 
-Amenities and shops
--singulars and plurals - probably with regex
--dry_cleaner, dry_cleaners, dry_cleaning, drycleaner are all the same
--capitalizations - lower all
--tyres, tires, car_tires
--nails, Nails salon
--hairdresser, Hair salon
--cell_phone, cellphone
--optometry, optometrist 
--community_center, community_centre
--fountain, fountian - typo
--remove fix
--bail_bond, bail_service to bail_bond
--“outdoor water sports and swim” to outdoor
--bed, bedding
--clothing, clothes
--confectionary, confectionery
--herb, herbs, herbalist to herbalist
--pet_store, pet_supply to pet
+amenities
+-remove addr:housenumber
+-car_share, car_sharing - car_share
+-community_center, community_centre - community_center
+-dance_school, dancing_school - dancing_school
+-remove fixme
+-fountain, fountian - fountain
+-remove p
+-remove yes
 
+shops
+-lower capitalization, replace spaces with underscores
+-Hair Salon, hairdresser - hair_salon
+-Nail Salon, nails - nails
+-bail_bond, bail_service - bail_bond
+-clothing, clothes - clothes
+-confectionary, confectionery - confectionery (typo)
+-herb, herbs, herbalist - herbs
+-pet_store, pet_supply - pet
+-"outdoor water sports ands wim" to outdoor
+
+cuisines
 -sub/sandwiches, sandwich, sandwiches
 -dim_sum, dimsum
 -coffee, coffee1, coffee_shop
@@ -65,3 +67,11 @@ Things to do
 -remove underscores if it’s first character in string
 -lower everything
 
+Noted problems
+-super inconsistent values for amenities, shops, cuisines
+-no way to determine subcategories
+-inconsistent ways to input
+-duplicate ways but no way of differentiating without further knowledge or references
+-tons of typos
+-some categories don't make sense
+-lots of plurals and singulars that are categorized separately
