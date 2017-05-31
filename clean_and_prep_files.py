@@ -13,12 +13,17 @@ typos, and capitalizations
 3. Shop values - same as amenities
 4. Cuisine values - mostly same as amenities and shops, will only take first value
 if it has subvalues too
+5. Some values need to be removed because of input error and things that just don't 
+make sense
 
 Lastly, make a function to write your intended values to a csv file for database
 """
 
 # Alameda de las Pulgas has many variations of capitalizations
-alameda_regex = re.compile(r"alameda\sde\slas\pulgas", re.I)
+alameda_regex = re.compile(r"alameda\sde\slas\(pulgas)?", re.I)
+# if it matches this, return "Alameda de las Pulgas"
+
+plurals_regex = re.compile(r"")
 
 """
 Each dictionary stores corrections to the respective street name, street to replace,
@@ -51,15 +56,48 @@ street_replacements = {
         "Hyde": "Hyde Street",
         "King": "King Street",
         "Vallejo": "Vallejo Street",
-        "Alameda De Las": "Alameda de las Pulgas"
         }
 
-amenities_corrections = {}
+amenities_corrections = {
+        "car_sharing": "car_share",
+        "community_centre": "community_center",
+        "dancing_school": "dance_school",
+        "fountian": "fountain" # typo correction
+        }
 
-shops_corrections = {}
+shops_corrections = {
+        "hairdresser": "hair_salon",
+        "nail_salon": "nails"
+        "bail_service": "bail_bond",
+        "clothing": "clohtes"
+        "confectionary": "confectionery",
+        "herbalist": "herbs",
+        "pet_store": "pet",
+        "pet_supply": "pet"
+        "outdoor water sports and swim": "outdoor"
+        }
 
-cuisine_corrections = {}
+cuisines_corrections = {
+        "subs/sandwiches": "sandwiches",
+        "dimsum": "dim_sum",
+        "coffee1" "coffee",
+        "coffee_shop": "coffee"
+        "bubble_tea": "boba",
+        "korean_food": "korean"
+        "vietnamnese": "vietnamese" # typo correction
+        "bbq": "barbecue",
+        "doughnut": "donuts"
+        "lao": "laotian"
+        }
 
-
+"""
+When creating your function to clean files, make sure you write in these steps.
+1. Lower strings so everything is lower case
+2. Replace all spaces with underscores
+3. Check for special cases
+4. Check to see if you need to convert to plurals
+5. Check for special cases
+6. Then check in dictionaries for each case
+"""
 def clean_street_names(string):
-
+    pass
