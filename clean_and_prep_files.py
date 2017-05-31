@@ -32,22 +32,22 @@ amenity, shop, or cuisine value from the auditing portion.
 
 street_corrections = {
         "Ctr": "Center",
-        "Van Ness", "Van Ness Avenue",
-         "MILLSBRAE AVE": "Millsbrae Avenue",
-         "MacDonald": "MacDonald Ave",
-         "Ave": "Avenue",
-         "Ave.": "Avenue",
-         "Avenie", "Avenue",
-         "avenue", "Avenue",
-         "Blvd": "Boulevard",
-         "Blvd.": "Boulevard",
-         "Dr": "Drive",
-         "Dr.": "Drive",
-         "Hwy": "Highway",
-         "street": "Street",
-         "St": "Street",
-         "St.": "Street",
-         "Plz": "Plaza"
+        "Van Ness": "Van Ness Avenue",
+        "MILLSBRAE AVE": "Millsbrae Avenue",
+        "MacDonald": "MacDonald Ave",
+        "Ave": "Avenue",
+        "Ave.": "Avenue",
+        "Avenie": "Avenue",
+        "avenue": "Avenue",
+        "Blvd": "Boulevard",
+        "Blvd.": "Boulevard",
+        "Dr": "Drive",
+        "Dr.": "Drive",
+        "Hwy": "Highway",
+        "street": "Street",
+        "St": "Street",
+        "St.": "Street",
+        "Plz": "Plaza"
          }
 
 street_replacements = {
@@ -67,26 +67,26 @@ amenities_corrections = {
 
 shops_corrections = {
         "hairdresser": "hair_salon",
-        "nail_salon": "nails"
+        "nail_salon": "nails",
         "bail_service": "bail_bond",
-        "clothing": "clohtes"
+        "clothing": "clothes",
         "confectionary": "confectionery",
         "herbalist": "herbs",
         "pet_store": "pet",
-        "pet_supply": "pet"
+        "pet_supply": "pet",
         "outdoor water sports and swim": "outdoor"
         }
 
 cuisines_corrections = {
         "subs/sandwiches": "sandwiches",
         "dimsum": "dim_sum",
-        "coffee1" "coffee",
-        "coffee_shop": "coffee"
+        "coffee1": "coffee",
+        "coffee_shop": "coffee",
         "bubble_tea": "boba",
-        "korean_food": "korean"
-        "vietnamnese": "vietnamese" # typo correction
+        "korean_food": "korean",
+        "vietnamnese": "vietnamese", # typo correction
         "bbq": "barbecue",
-        "doughnut": "donuts"
+        "doughnut": "donuts",
         "lao": "laotian"
         }
 
@@ -96,7 +96,7 @@ When creating your function to clean files, make sure you write in these steps.
 2. Replace all spaces with underscores
 3. Check for special cases
 4. Check to see if you need to convert to plurals
-5. Check for special cases
+5. Check for special cases to skip or replace
 6. Then check in dictionaries for each case
 """
 def clean_street_names(string):
