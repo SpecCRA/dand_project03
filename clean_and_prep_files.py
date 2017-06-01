@@ -5,20 +5,6 @@ import csv
 import xml.etree.cElementTree as ET
 import pprint
 
-"""
-Things I know I need to clean
-1. Inconsistent street names - capitalizations, typos, abbreviations
-2. Amneties values - different variations for the same amenity, singular/plurals
-typos, and capitalizations
-3. Shop values - same as amenities
-4. Cuisine values - mostly same as amenities and shops, will only take first value
-if it has subvalues too
-5. Some values need to be removed because of input error and things that just don't 
-make sense
-
-Lastly, make a function to write your intended values to a csv file for database
-"""
-
 INPUT_FILE = "san_francisco.osm"
 
 # Alameda de las Pulgas has many variations of capitalizations
