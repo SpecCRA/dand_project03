@@ -8,7 +8,7 @@ import pprint
 INPUT_FILE = "san_francisco.osm"
 
 # Alameda de las Pulgas has many variations of capitalizations
-alameda_regex = re.compile(r"alameda\sde\slas\(pulgas)?", re.I)
+alameda_regex = re.compile(r"alameda\sde\slas\s(pulgas)?", re.I)
 # if it matches this, return "Alameda de las Pulgas"
 
 plurals_regex = re.compile(r"")
@@ -113,23 +113,29 @@ def clean_value(string):
     4. split based on ; and take first value (but not barbecue;korean)
     5. also split on , and take first value
     """
-    first_step = string.lower()
+    working_string = string.lower()
     
-    if "_" in first_step:
-        first_step = first_step.replace(" ", "_")
+    if " " in working_string:
+        working_string = working_string.replace(" ", "_")
 
-    if ";" in 
+    if ";" in working_string:
+        working_string = working_string.split(";")[0]
+    if "," in working_string:
+        working_string = working_string.split(",")[0]
+
+    return working_string
+
+def clean_amenity_value(string):
+    """
+    1. Remove addr:housenumber (the value), p, fixme, and yes -- return None
+    2. find singular/plurals and return plurals with plurals regex
+    3. use amenities_corretions dictionary for the typos and renaming
+    """
 
     pass
 
-def clean_amenities(string):
-    """
-    1. Remove addr:housenumber (the value), p, fixme, and yes
-    2. lower every string
-    3. replace spaces with "_"
-    4. split at ";" and only take first value
-    5. find singular/plurals and return plurals with plurals regex
-    6. use amenities_corretions dictionary for the typos and renaming
-    """
+def clean_shop_value(string):
+    pass
 
+def clean_cuisine_value(string):
     pass
