@@ -75,7 +75,9 @@ cuisines_corrections = {
         "vietnamnese": "vietnamese", 
         "bbq": "barbecue",
         "doughnut": "donuts",
-        "lao": "laotian"
+        "lao": "laotian",
+        "california": "californian",
+        "homemade_ice_cream": "ice_cream"
         }
 
 """
@@ -107,11 +109,17 @@ def clean_value(string):
     Takes a string as an argument
     1. makes everything lower case
     2. replaces empty spaces with underscores
-    3. removes underscore if it is first character
-    4. how do I check for singulars and plurals nicely?
-    5. split based on ; and take first value (but not barbecue;korean)
+    3. how do I check for singulars and plurals nicely?
+    4. split based on ; and take first value (but not barbecue;korean)
+    5. also split on , and take first value
     """
+    first_step = string.lower()
     
+    if "_" in first_step:
+        first_step = first_step.replace(" ", "_")
+
+    if ";" in 
+
     pass
 
 def clean_amenities(string):
