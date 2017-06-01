@@ -14,6 +14,9 @@ and lat values are floats
 3. Consistency in county and city values
 4. Consistency in postal code
 5. Correct postal code (Starts with 941 for San Francisco)
+
+Upon further exploration of data, I wanted to use the amenities, shop, and
+cuisine values to query later. So I figured I should audit those too.
 """
 
 INPUT_FILE = "san_francisco.osm"
@@ -82,8 +85,9 @@ def audit_street_name(string):
     words = string.split()
     if words[-1] not in expected_street_names:
         """
-        Instead of appending the entire street name, I just want to look at the
-        bad street name label.
+        Checks the last word of every street name and counts them all. Also checks
+        the full street names in case something else is worth auditing that isn't
+        int he last word.
         """
         add_to_dict(full_street_names, string)
         add_to_dict(bad_street_names, words[-1])
@@ -121,8 +125,11 @@ def add_to_dict(dictionary, string):
 
 def audit_file(filename):
     """
-    This function audits the XML input file to check IDs, UIDs, latitude, longitude, street
-    names, and post codes.
+    This function iterates through the XML input file to check IDs, UIDs, latitude,
+    longitude, street names, and post codes.
+
+    In the child tags, I add amenity, shop, and cuisine values to separate
+    dictionaries for auditing.
     """
     for event, elem in ET.iterparse(filename, events = ("start",)):
         if elem.tag == "node" or elem.tag == "way":
