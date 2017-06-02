@@ -45,6 +45,8 @@ street_replacements = {
         "Hyde": "Hyde Street",
         "King": "King Street",
         "Vallejo": "Vallejo Street",
+        "broadway": "Broadway",
+        "townsend street": "Townsend Street"
         }
 
 amenities_corrections = {
@@ -133,10 +135,9 @@ When creating your function to clean files, make sure you write in these steps.
 6. Then check in dictionaries for each case
 7. Remember with subcategories, just take the first one (split on ;)
 """
-def clean_street_names(string):
+def clean_street_name(string):
     """
     Clean street names with the dictionaries street_corrections and street_replacments.
-    Fix capitalizations like all caps and all lower case.
     Fix variations in capitalizations in "Alameda de las Pulgas"
     Things in street_replacements are individually cleaned.
     street_corrections are in the string somewhere.
@@ -187,4 +188,10 @@ def clean_shop_value(string):
     pass
 
 def clean_cuisine_value(string):
+    pass
+
+def shape_element():
+    pass
+
+def write_to_csv():
     pass
