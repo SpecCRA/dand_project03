@@ -61,9 +61,23 @@ shops_corrections = {
         "clothing": "clothes",
         "confectionary": "confectionery",
         "herbalist": "herbs",
+        "herb": "herbs",
         "pet_store": "pet",
         "pet_supply": "pet",
-        "outdoor water sports and swim": "outdoor"
+        "outdoor water sports and swim": "outdoor",
+        "beauty_products": "beauty",
+        "fishing": "fish",
+        "floor": "flooring",
+        "garden_centre": "garden_center",
+        "framing": "frame",
+        "pawn": "pawnbroker",
+        "thift_store": "thrift",
+        "appliance": "appliances",
+        "bathroom_furnishing": "bathroom_furnishings",
+        "craft": "crafts",
+        "rug": "rugs",
+        "sport": "sports",
+        "vitamin": "vitamins"
         }
 
 cuisines_corrections = {
@@ -78,7 +92,24 @@ cuisines_corrections = {
         "doughnut": "donuts",
         "lao": "laotian",
         "california": "californian",
-        "homemade_ice_cream": "ice_cream"
+        "homemade_ice_cream": "ice_cream",
+        "frozen_yoghurt": "frozen_yogurt",
+        "guatamalen": "guatamalan",
+        "hawaian": "hawaiian",
+        "mexican_food": "mexican",
+        "burger": "burgers",
+        "burittos": "burrito",
+        "crepe": "crepes",
+        "donut": "donuts",
+        "donut_shop": "donuts",
+        "hot_dog": "hot_dogs",
+        "hotdog": "hot_dogs",
+        "noodle": "noodles",
+        "salad": "salads",
+        "sandwich": "sandwiches",
+        "smoothie": "smoothies",
+        "soup": "soups",
+        "taco": "tacos"
         }
 
 """
