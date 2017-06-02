@@ -11,6 +11,7 @@ INPUT_FILE = "san_francisco.osm"
 alameda_regex = re.compile(r"alameda\sde\slas\s(pulgas)?", re.I)
 # if it matches this, return "Alameda de las Pulgas"
 
+#PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 plurals_regex = re.compile(r"")
 
 """
@@ -131,8 +132,14 @@ def clean_amenity_value(string):
     2. find singular/plurals and return plurals with plurals regex
     3. use amenities_corretions dictionary for the typos and renaming
     """
-
-    pass
+    if string == "addr:housenumber" or string == "p" or string == "fixme" \
+            or string == "yes":
+                return None
+    try:
+        if string in amenities_corrections.keys():
+            pass
+    except:
+        pass
 
 def clean_shop_value(string):
     pass
