@@ -64,7 +64,7 @@ shops_corrections = {
         "herb": "herbs",
         "pet_store": "pet",
         "pet_supply": "pet",
-        "outdoor water sports and swim": "outdoor",
+        "outdoor_water_sports_and_swim": "outdoor",
         "beauty_products": "beauty",
         "fishing": "fish",
         "floor": "flooring",
@@ -136,9 +136,9 @@ When creating your function to clean files, make sure you write in these steps.
 
 def clean_abbrev(string):
     """
-    Checks a street name to check if a street name abbreviation found in dictionary,
-    street_corrections is present. Then replaces the value and returns the corrected
-    street name with full street name.
+    Checks and replaces a string for street or directional abbreviations with its
+    full name. Its purpose is to give the street names consistency. 
+    This function is specifically for street names and nothing else.
     """
 
     words = string.split()
@@ -187,13 +187,15 @@ def clean_value(string):
     3. how do I check for singulars and plurals nicely?
     4. split based on ; and take first value (but not barbecue;korean)
     5. also split on , and take first value
+
+    This function deals with amenity, shop, and cuisine values.
     """
     working_string = string.lower()
     
     if " " in working_string:
         working_string = working_string.replace(" ", "_")
 
-    if ";" in working_string:
+    if ";" in working_string and not "barebecue;korean": #special case 
         working_string = working_string.split(";")[0]
     if "," in working_string:
         working_string = working_string.split(",")[0]
@@ -203,23 +205,31 @@ def clean_value(string):
 def clean_amenity_value(string):
     """
     1. Remove addr:housenumber (the value), p, fixme, and yes -- return None
-    2. find singular/plurals and return plurals with plurals regex
-    3. use amenities_corretions dictionary for the typos and renaming
+    2. use amenities_corretions dictionary for the typos and renaming
     """
+    string = clean_value(string)
     if string == "addr:housenumber" or string == "p" or string == "fixme" \
             or string == "yes":
                 return None
-    try:
-        if string in amenities_corrections.keys():
-            pass
-    except:
-        pass
+    else:
+        try:
+            if string in amenities_corrections.keys():
+                return amenities_corrections[string]
+        except:
+            return string
 
-def clean_shop_value(string):
-    pass
-
-def clean_cuisine_value(string):
-    pass
+def clean_shop_cuisine(corrections_dict, string):
+    """
+    This is used for shop and cuisine values. The methods to clean these values
+    are the same. First it calls the clean_value function and checks to see if
+    there are corrections to be made. If not, this function will just return the
+    original string.
+    """
+    new_string = clean_value(string)
+    if new_string in corrections_dict.keys():
+        return corrections_dict[new_string]
+    else:
+        return new_string
 
 def shape_element():
     pass
