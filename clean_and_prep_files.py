@@ -46,7 +46,8 @@ street_replacements = {
         "King": "King Street",
         "Vallejo": "Vallejo Street",
         "broadway": "Broadway",
-        "townsend street": "Townsend Street"
+        "townsend street": "Townsend Street",
+        "New Montgomery": "New Montgomery Street"
         }
 
 amenities_corrections = {
