@@ -112,6 +112,17 @@ cuisines_corrections = {
         "taco": "tacos"
         }
 
+direction_storage = {
+        "N": "North",
+        "S": "South",
+        "E": "East",
+        "W": "West",
+        "NE": "Northeast",
+        "NW": "Northwest",
+        "SE": "Southeast",
+        "SW": "Southwest"
+        }
+
 """
 When creating your function to clean files, make sure you write in these steps.
 1. Lower strings so everything is lower case
