@@ -135,6 +135,20 @@ When creating your function to clean files, make sure you write in these steps.
 6. Then check in dictionaries for each case
 7. Remember with subcategories, just take the first one (split on ;)
 """
+def clean_abbrev(string):
+    """
+    Checks a street name to check if a street name abbreviation found in dictionary,
+    street_corrections is present. Then replaces the value and returns the corrected
+    street name with full street name.
+    """
+    words = string.split()
+    for word in words:
+        if word in street_corrections.keys():
+            pos = words.index(word)
+            words[pos] = street_corrections[word]
+            string = " ".join(words)
+            return string
+
 def clean_street_name(string):
     """
     Clean street names with the dictionaries street_corrections and street_replacments.
@@ -145,8 +159,20 @@ def clean_street_name(string):
     -remove then replace with dictionary value
     Remove "Wedemeyer", looks like it's a typo for Wedemeyer Bakery.
     """
-    
-    pass
+    words = string.split()
+    if string in street_replacements.keys():
+        string = string_replacements[string]
+        return string
+    elif alameda_regex.search(string):
+        string = "Alameda de las Pulgas"
+        return string
+    elif string == "Wedemeyer":
+        pass
+    else:
+        try:
+            clean_abbrev(string)
+        except:
+            return string
 
 def clean_value(string):
     """
