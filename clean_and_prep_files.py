@@ -9,6 +9,7 @@ INPUT_FILE = "san_francisco.osm"
 
 # Alameda de las Pulgas has many variations of capitalizations
 alameda_regex = re.compile(r"(alameda\sde\sla\s)(pulgas)?", re.I)
+# This is the same as the regex in the quizzes except I removed #
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%$@\,\. \t\r\n]')
 
 """
@@ -179,14 +180,13 @@ def clean_street_name(string):
         except:
             return string
 
-def clean_value(string):
+def prep_value(string):
     """
     Takes a string as an argument
     1. makes everything lower case
     2. replaces empty spaces with underscores
-    3. how do I check for singulars and plurals nicely?
-    4. split based on ; and take first value (but not barbecue;korean)
-    5. also split on , and take first value
+    3. split based on ; and take first value (but not barbecue;korean)
+    4. also split on , and take first value
 
     This function deals with amenity, shop, and cuisine values.
     """
@@ -195,9 +195,9 @@ def clean_value(string):
     if " " in working_string:
         working_string = working_string.replace(" ", "_")
 
-    if ";" in working_string and not "barebecue;korean": #special case 
+    elif ";" in working_string and not "barebecue;korean": #special case 
         working_string = working_string.split(";")[0]
-    if "," in working_string:
+    elif "," in working_string:
         working_string = working_string.split(",")[0]
 
     return working_string
@@ -207,7 +207,7 @@ def clean_amenity_value(string):
     1. Remove addr:housenumber (the value), p, fixme, and yes -- return None
     2. use amenities_corretions dictionary for the typos and renaming
     """
-    string = clean_value(string)
+    string = prep_value(string)
     if string == "addr:housenumber" or string == "p" or string == "fixme" \
             or string == "yes":
                 return None
@@ -225,14 +225,98 @@ def clean_shop_cuisine(corrections_dict, string):
     there are corrections to be made. If not, this function will just return the
     original string.
     """
-    new_string = clean_value(string)
+    new_string = prep_value(string)
     if new_string in corrections_dict.keys():
         return corrections_dict[new_string]
     else:
         return new_string
 
-def shape_element():
-    pass
+def process_key(key_string):
+    if ":" in key_string:
+        indexed_string = key_string.find(":")
+        tag_type = key_string[:indexed_string]
+        new_key = key_string[indexed_string+1]
+        return [new_key, tag_type]
+    else: 
+        new_key = key_string
+        tag_type = "regular"
+        return [new_key, tag_type]
+
+def shape_element(filename):
+
+    node_attribs = {}
+    way_attribs = {}
+    way_nodes = []
+    tags = []  # Handle secondary tags the same way for both node and way elements
+
+    # YOUR CODE HERE
+    if element.tag == 'node':
+
+      # first loop through to get node's attributes and values into a dictinonary
+        for attrName, attrValue in element.attrib.items():
+            if attrName in NODE_FIELDS:
+                node_attribs[attrName] = attrValue
+        #print node_attribs
+
+        """ 
+        Next, loop through the child tags and parse out the
+        key, value, and clean up the 'key' to create types. Then
+        put everything into a dictionary to append to tags list.
+        """
+        for i in element.iter('tag'):
+            #print i
+            temp_dict = {}
+            if PROBLEMCHARS.search(i.attrib['k']):
+                continue
+            else:
+                temp_dict['id'] = element.attrib['id']
+                temp_dict['key'] = process_key(i.attrib['k'])[0]
+                temp_dict['type'] = process_key(i.attrib['k'])[1]
+                temp_dict['value'] = i.attrib['v']
+                #print temp_dict
+            tags.append(temp_dict)
+        #print tags
+
+        return {'node': node_attribs, 'node_tags': tags}
+
+    elif element.tag == 'way':
+
+        for attrName, attrValue in element.attrib.items():
+            if attrName in WAY_FIELDS:
+                #print attrName
+                #print attrValue
+                way_attribs[attrName] = attrValue
+        #print way_attribs
+
+        """ 
+        Since the way tags follow the same rules as the node tags, these
+        are processed the same way.
+        """
+        for i in element.iter('tag'):
+            temp_dict = {}
+            if PROBLEMCHARS.search(i.attrib['k']):
+                continue
+            else:
+                temp_dict['id'] = element.attrib['id']
+                temp_dict['key'] = process_key(i.attrib['k'])[0]
+                temp_dict['type'] = process_key(i.attrib['k'])[1]
+                temp_dict['value'] = i.attrib['v']
+            tags.append(temp_dict)
+        print tags
+
+        """
+        enumerate() is used here to create a counter for each 'nd' child node.
+        """
+
+        for counter, i in enumerate(element.iter('nd')):
+            temp_dict = {}
+            temp_dict['id'] = element.attrib['id']
+            temp_dict['node_id'] = i.attrib['ref']
+            temp_dict['position'] = counter
+            way_nodes.append(temp_dict)
+        #print way_nodes
+
+        return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
 def write_to_csv():
     pass
