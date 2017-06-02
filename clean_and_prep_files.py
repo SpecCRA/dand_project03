@@ -8,11 +8,8 @@ import pprint
 INPUT_FILE = "san_francisco.osm"
 
 # Alameda de las Pulgas has many variations of capitalizations
-alameda_regex = re.compile(r"alameda\sde\slas\s(pulgas)?", re.I)
-# if it matches this, return "Alameda de las Pulgas"
-
-#PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
-plurals_regex = re.compile(r"")
+alameda_regex = re.compile(r"(alameda\sde\sla\s)(pulgas)?", re.I)
+PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%$@\,\. \t\r\n]')
 
 """
 Each dictionary stores corrections to the respective street name, street to replace,
@@ -136,17 +133,24 @@ When creating your function to clean files, make sure you write in these steps.
 6. Then check in dictionaries for each case
 7. Remember with subcategories, just take the first one (split on ;)
 """
+
 def clean_abbrev(string):
     """
     Checks a street name to check if a street name abbreviation found in dictionary,
     street_corrections is present. Then replaces the value and returns the corrected
     street name with full street name.
     """
+
     words = string.split()
     for word in words:
         if word in street_corrections.keys():
             pos = words.index(word)
             words[pos] = street_corrections[word]
+            string = " ".join(words)
+            return string
+        elif word in direction_storage.keys() and not string == "Avenue E":
+            pos = words.index(word)
+            words[pos] = direction_storage[word]
             string = " ".join(words)
             return string
 
