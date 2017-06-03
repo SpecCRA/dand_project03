@@ -10,7 +10,7 @@ import cerberus
 
 import schema
 
-osm_file = "san_francisco.osm"
+OSM_PATH = "san_francisco.osm"
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
 WAYS_PATH = "ways.csv"
@@ -26,7 +26,7 @@ LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
 
 # Make sure the fields order in the csvs matches the column order in the sql table schema
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
-NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type', 'amenity', 'shop', 'cuisine']
+NODE_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_FIELDS = ['id', 'user', 'uid', 'version', 'changeset', 'timestamp']
 WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_NODES_FIELDS = ['id', 'node_id', 'position']
@@ -230,7 +230,7 @@ def clean_amenity_value(string):
     string = prep_value(string)
     if string == "addr:housenumber" or string == "p" or string == "fixme" \
             or string == "yes":
-                return None
+                return "bad value"
     else:
         try:
             if string in amenities_corrections.keys():
@@ -282,7 +282,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 continue
             else:
             	cleaned_key = process_key(i.attrib['k'])[0]
-            	clean_type = process_key(i.attrib['k'])[1]
+            	cleaned_type = process_key(i.attrib['k'])[1]
                 temp_dict['id'] = element.attrib['id']
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
