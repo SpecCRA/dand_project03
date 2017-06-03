@@ -256,7 +256,7 @@ def process_key(key_string):
     if ":" in key_string:
         indexed_string = key_string.find(":")
         tag_type = key_string[:indexed_string]
-        new_key = key_string[indexed_string+1]
+        new_key = key_string[indexed_string+1:]
         return [new_key, tag_type]
     else: 
         new_key = key_string
