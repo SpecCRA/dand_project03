@@ -10,12 +10,13 @@ import cerberus
 
 import schema
 
-INPUT_FILE = "san_francisco.osm"
+osm_file = "san_francisco.osm"
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
 WAYS_PATH = "ways.csv"
 WAY_NODES_PATH = "ways_nodes.csv"
 WAY_TAGS_PATH = "ways_tags.csv"
+SCHEMA = schema.schema
 
 # Alameda de las Pulgas has many variations of capitalizations
 alameda_regex = re.compile(r"(alameda\sde\sla\s)(pulgas)?", re.I)
@@ -251,6 +252,7 @@ def clean_shop_cuisine(corrections_dict, string):
         return new_string
 
 def process_key(key_string):
+	# separates a key string value into its tag type or key value
     if ":" in key_string:
         indexed_string = key_string.find(":")
         tag_type = key_string[:indexed_string]
@@ -261,7 +263,8 @@ def process_key(key_string):
         tag_type = "regular"
         return [new_key, tag_type]
 
-def shape_element(filename):
+def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIELDS,
+                  problem_chars=PROBLEMCHARS, default_tag_type='regular'):
 
     node_attribs = {}
     way_attribs = {}
