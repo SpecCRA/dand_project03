@@ -14,6 +14,9 @@ CREATE TABLE nodes_tags (
     key TEXT,
     value TEXT,
     type TEXT,
+    amenity TEXT,
+    shop TEXT,
+    cuisine TEXT,
     FOREIGN KEY (id) REFERENCES nodes(id)
 );
 

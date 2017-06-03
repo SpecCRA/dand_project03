@@ -272,30 +272,29 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     tags = []  # Handle secondary tags the same way for both node and way elements
     if element.tag == 'node':
 
-      # first loop through to get node's attributes and values into a dictinonary
         for attrName, attrValue in element.attrib.items():
             if attrName in NODE_FIELDS:
                 node_attribs[attrName] = attrValue
-        #print node_attribs
 
-        """ 
-        Next, loop through the child tags and parse out the
-        key, value, and clean up the 'key' to create types. Then
-        put everything into a dictionary to append to tags list.
-        """
         for i in element.iter('tag'):
-            #print i
             temp_dict = {}
             if PROBLEMCHARS.search(i.attrib['k']):
                 continue
             else:
+            	cleaned_key = process_key(i.attrib['k'])[0]
+            	clean_type = process_key(i.attrib['k'])[1]
                 temp_dict['id'] = element.attrib['id']
-                temp_dict['key'] = process_key(i.attrib['k'])[0]
-                temp_dict['type'] = process_key(i.attrib['k'])[1]
-                temp_dict['value'] = i.attrib['v']
-                #print temp_dict
+                temp_dict['key'] = cleaned_key
+                temp_dict['type'] = cleaned_type
+                if cleaned_key == "amenity":
+                	temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                elif cleaned_key == "shop":
+                	temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                elif cleaned_key == "cuisine":
+                	temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                else:
+                	temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
-        #print tags
 
         return {'node': node_attribs, 'node_tags': tags}
 
@@ -303,15 +302,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
 
         for attrName, attrValue in element.attrib.items():
             if attrName in WAY_FIELDS:
-                #print attrName
-                #print attrValue
                 way_attribs[attrName] = attrValue
-        #print way_attribs
 
-        """ 
-        Since the way tags follow the same rules as the node tags, these
-        are processed the same way.
-        """
         for i in element.iter('tag'):
             temp_dict = {}
             if PROBLEMCHARS.search(i.attrib['k']):
@@ -324,23 +316,16 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             tags.append(temp_dict)
         print tags
 
-        """
-        enumerate() is used here to create a counter for each 'nd' child node.
-        """
-
         for counter, i in enumerate(element.iter('nd')):
             temp_dict = {}
             temp_dict['id'] = element.attrib['id']
             temp_dict['node_id'] = i.attrib['ref']
             temp_dict['position'] = counter
             way_nodes.append(temp_dict)
-        #print way_nodes
+
 
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
-# ================================================== #
-#               Helper Functions                     #
-# ================================================== #
 def get_element(osm_file, tags=('node', 'way', 'relation')):
     """Yield element if it is the right type of tag"""
 
@@ -374,10 +359,6 @@ class UnicodeDictWriter(csv.DictWriter, object):
         for row in rows:
             self.writerow(row)
 
-
-# ================================================== #
-#               Main Function                        #
-# ================================================== #
 def process_map(file_in, validate):
     """Iteratively process each XML element and write to csv(s)"""
 

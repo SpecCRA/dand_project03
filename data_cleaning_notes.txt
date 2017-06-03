@@ -106,3 +106,8 @@ Noted problems
 -tons of typos
 -some categories don't make sense
 -lots of plurals and singulars that are categorized separately
+
+Ways to improve data:
+-separate by districts to check for things like one way densities
+-inconsistencies can all be improved
+-narrower or wider descriptions of amenities, shops, and cuisines -- more standard would be nice
