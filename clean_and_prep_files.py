@@ -279,7 +279,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         for i in element.iter('tag'):
             temp_dict = {}
             if PROBLEMCHARS.search(i.attrib['k']):
-                continue
+                pass
             else:
             	cleaned_key = process_key(i.attrib['k'])[0]
             	cleaned_type = process_key(i.attrib['k'])[1]
