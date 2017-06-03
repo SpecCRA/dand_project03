@@ -230,7 +230,7 @@ def clean_amenity_value(string):
     string = prep_value(string)
     if string == "addr:housenumber" or string == "p" or string == "fixme" \
             or string == "yes":
-                return "bad value"
+                return "NULL"
     else:
         try:
             if string in amenities_corrections.keys():
