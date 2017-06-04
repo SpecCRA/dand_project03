@@ -278,12 +278,16 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     way_attribs = {}
     way_nodes = []
     tags = []  # Handle secondary tags the same way for both node and way elements
-    if element.tag == 'node':
 
+    if element.tag == 'node':
+        # Iterate through each node tag and add the appropriate names and values
         for attrName, attrValue in element.attrib.items():
             if attrName in NODE_FIELDS:
                 node_attribs[attrName] = attrValue
-
+        """
+        Iterate through child tags to clean and add values I want to use after
+        previously auditing.
+        """
         for i in element.iter('tag'):
             temp_dict = {}
             if PROBLEMCHARS.search(i.attrib['k']):
@@ -321,7 +325,11 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         return {'node': node_attribs, 'node_tags': tags}
 
     elif element.tag == 'way':
-
+        """
+        The cleaning and writing of the way tags work the same as the node tags.
+        I just haven't quite figured out how to put this into a function.
+        And admittedly feel done with this part of the project.
+        """
         for attrName, attrValue in element.attrib.items():
             if attrName in WAY_FIELDS:
                 way_attribs[attrName] = attrValue
@@ -370,6 +378,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
 
 
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
+
+# The following are functions from the case study quiz
 
 def get_element(osm_file, tags=('node', 'way', 'relation')):
     """Yield element if it is the right type of tag"""
