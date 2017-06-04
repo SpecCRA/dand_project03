@@ -279,7 +279,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         for i in element.iter('tag'):
             temp_dict = {}
             if PROBLEMCHARS.search(i.attrib['k']):
-                pass
+                continue
             else:
             	cleaned_key = process_key(i.attrib['k'])[0]
             	cleaned_type = process_key(i.attrib['k'])[1]
@@ -287,22 +287,27 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
                 if cleaned_key == "amenity":
-                	if clean_amenity_value(i.attrib['v']):
-                		temp_dict['value'] = clean_amenity_value(i.attrib['v'])
-                	else:
-                		continue
+                    if clean_amenity_value(i.attrib['v']):
+                        temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                    else:
+                        continue
+                elif cleaned_key == "street":
+                    if clean_street_name(i.attrib['v']):
+                        temp_dict['value'] = clean_street_name(i.attrib['v'])
+                    else:
+                        continue
                 elif cleaned_key == "shop":
-                	if clean_shop_cuisine(shops_corrections, i.attrib['v']):
-                		temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
-                	else:
-                		continue
+                    if clean_shop_cuisine(shops_corrections, i.attrib['v']):
+                        temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                    else:
+                        continue
                 elif cleaned_key == "cuisine":
-                	if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
-                		temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
-                	else:
-                		continue
+                    if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
+                        temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                    else:
+                        continue
                 else:
-                	temp_dict['value'] = i.attrib['v']
+                    temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
 
         return {'node': node_attribs, 'node_tags': tags}
@@ -324,22 +329,27 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
                 if cleaned_key == "amenity":
-                	if clean_amenity_value(i.attrib['v']):
-                		temp_dict['value'] = clean_amenity_value(i.attrib['v'])
-                	else:
-                		continue
+                    if clean_amenity_value(i.attrib['v']):
+                        temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                    else:
+                        continue
+                elif cleaned_key = "street":
+                    if clean_street_name(i.attrib['v']):
+                        temp_dict['value'] = clean_street_value(i.attrib['v'])
+                    else:
+                        continue
                 elif cleaned_key == "shop":
-                	if clean_shop_cuisine(shops_corrections, i.attrib['v']):
-                		temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
-                	else:
-                		continue
+                    if clean_shop_cuisine(shops_corrections, i.attrib['v']):
+                        temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                    else:
+                        continue
                 elif cleaned_key == "cuisine":
-                	if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
-                		temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
-                	else:
-                		continue
+                    if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
+                        temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                    else:
+                        continue
                 else:
-                	temp_dict['value'] = i.attrib['v']
+                    temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
         print tags
 
