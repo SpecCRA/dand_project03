@@ -333,7 +333,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                         temp_dict['value'] = clean_amenity_value(i.attrib['v'])
                     else:
                         continue
-                elif cleaned_key = "street":
+                elif cleaned_key == "street":
                     if clean_street_name(i.attrib['v']):
                         temp_dict['value'] = clean_street_value(i.attrib['v'])
                     else:
