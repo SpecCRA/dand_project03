@@ -23,6 +23,7 @@ alameda_regex = re.compile(r"(alameda\sde\sla\s)(pulgas)?", re.I)
 # This is the same as the regex in the quizzes except I removed #
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%$@\,\. \t\r\n]')
 LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
+lower_case = re.compile("r[a-z]+")
 
 # Make sure the fields order in the csvs matches the column order in the sql table schema
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
@@ -155,15 +156,15 @@ When creating your function to clean files, make sure you write in these steps.
 7. Remember with subcategories, just take the first one (split on ;)
 """
 
-def clean_abbrev(string):
+def clean_abbrev(word_list):
     """
     Checks and replaces a string for street or directional abbreviations with its
-    full name. Its purpose is to give the street names consistency. 
+    full name. The third function is to correct any street names that are listed 
+    in all lower case. Its purpose is to give the street names consistency. 
     This function is specifically for street names and nothing else.
     """
 
-    words = string.split()
-    for word in words:
+    for word in word_list:
         if word in street_corrections.keys():
             pos = words.index(word)
             words[pos] = street_corrections[word]
@@ -174,6 +175,13 @@ def clean_abbrev(string):
             words[pos] = direction_storage[word]
             string = " ".join(words)
             return string
+        elif lower_case.search(word): # corrects bad capitaliztions
+            pos = words.index(word)
+            words[pos] = word.capitalize()
+            string = " ".join(words)
+            return string
+        else:
+            continue
 
 def clean_street_name(string):
     """
@@ -196,7 +204,7 @@ def clean_street_name(string):
         pass
     else:
         try:
-            clean_abbrev(string)
+            clean_abbrev(words)
         except:
             return string
 
