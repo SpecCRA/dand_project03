@@ -195,7 +195,7 @@ def clean_street_name(string):
     """
     words = string.split()
     if string in street_replacements.keys():
-        string = string_replacements[string]
+        string = street_replacements[string]
         return string
     elif alameda_regex.search(string):
         string = "Alameda de las Pulgas"
