@@ -287,11 +287,20 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
                 if cleaned_key == "amenity":
-                	temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                	if clean_amenity_value(i.attrib['v']):
+                		temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                	else:
+                		continue
                 elif cleaned_key == "shop":
-                	temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                	if clean_shop_cuisine(shops_corrections, i.attrib['v']):
+                		temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                	else:
+                		continue
                 elif cleaned_key == "cuisine":
-                	temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                	if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
+                		temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                	else:
+                		continue
                 else:
                 	temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
@@ -309,10 +318,28 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             if PROBLEMCHARS.search(i.attrib['k']):
                 continue
             else:
+            	cleaned_key = process_key(i.attrib['k'])[0]
+            	cleaned_type = process_key(i.attrib['k'])[1]
                 temp_dict['id'] = element.attrib['id']
-                temp_dict['key'] = process_key(i.attrib['k'])[0]
-                temp_dict['type'] = process_key(i.attrib['k'])[1]
-                temp_dict['value'] = i.attrib['v']
+                temp_dict['key'] = cleaned_key
+                temp_dict['type'] = cleaned_type
+                if cleaned_key == "amenity":
+                	if clean_amenity_value(i.attrib['v']):
+                		temp_dict['value'] = clean_amenity_value(i.attrib['v'])
+                	else:
+                		continue
+                elif cleaned_key == "shop":
+                	if clean_shop_cuisine(shops_corrections, i.attrib['v']):
+                		temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
+                	else:
+                		continue
+                elif cleaned_key == "cuisine":
+                	if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
+                		temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
+                	else:
+                		continue
+                else:
+                	temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
         print tags
 
@@ -326,79 +353,79 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
 
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
-# def get_element(osm_file, tags=('node', 'way', 'relation')):
-#     """Yield element if it is the right type of tag"""
+def get_element(osm_file, tags=('node', 'way', 'relation')):
+    """Yield element if it is the right type of tag"""
 
-#     context = ET.iterparse(osm_file, events=('start', 'end'))
-#     _, root = next(context)
-#     for event, elem in context:
-#         if event == 'end' and elem.tag in tags:
-#             yield elem
-#             root.clear()
+    context = ET.iterparse(osm_file, events=('start', 'end'))
+    _, root = next(context)
+    for event, elem in context:
+        if event == 'end' and elem.tag in tags:
+            yield elem
+            root.clear()
 
 
-# def validate_element(element, validator, schema=SCHEMA):
-#     """Raise ValidationError if element does not match schema"""
-#     if validator.validate(element, schema) is not True:
-#         field, errors = next(validator.errors.iteritems())
-#         message_string = "\nElement of type '{0}' has the following errors:\n{1}"
-#         error_string = pprint.pformat(errors)
+def validate_element(element, validator, schema=SCHEMA):
+    """Raise ValidationError if element does not match schema"""
+    if validator.validate(element, schema) is not True:
+        field, errors = next(validator.errors.iteritems())
+        message_string = "\nElement of type '{0}' has the following errors:\n{1}"
+        error_string = pprint.pformat(errors)
         
-#         raise Exception(message_string.format(field, error_string))
+        raise Exception(message_string.format(field, error_string))
 
 
-# class UnicodeDictWriter(csv.DictWriter, object):
-#     """Extend csv.DictWriter to handle Unicode input"""
+class UnicodeDictWriter(csv.DictWriter, object):
+    """Extend csv.DictWriter to handle Unicode input"""
 
-#     def writerow(self, row):
-#         super(UnicodeDictWriter, self).writerow({
-#             k: (v.encode('utf-8') if isinstance(v, unicode) else v) for k, v in row.iteritems()
-#         })
+    def writerow(self, row):
+        super(UnicodeDictWriter, self).writerow({
+            k: (v.encode('utf-8') if isinstance(v, unicode) else v) for k, v in row.iteritems()
+        })
 
-#     def writerows(self, rows):
-#         for row in rows:
-#             self.writerow(row)
+    def writerows(self, rows):
+        for row in rows:
+            self.writerow(row)
 
-# def process_map(file_in, validate):
-#     """Iteratively process each XML element and write to csv(s)"""
+def process_map(file_in, validate):
+    """Iteratively process each XML element and write to csv(s)"""
 
-#     with codecs.open(NODES_PATH, 'w') as nodes_file, \
-#          codecs.open(NODE_TAGS_PATH, 'w') as nodes_tags_file, \
-#          codecs.open(WAYS_PATH, 'w') as ways_file, \
-#          codecs.open(WAY_NODES_PATH, 'w') as way_nodes_file, \
-#          codecs.open(WAY_TAGS_PATH, 'w') as way_tags_file:
+    with codecs.open(NODES_PATH, 'w') as nodes_file, \
+         codecs.open(NODE_TAGS_PATH, 'w') as nodes_tags_file, \
+         codecs.open(WAYS_PATH, 'w') as ways_file, \
+         codecs.open(WAY_NODES_PATH, 'w') as way_nodes_file, \
+         codecs.open(WAY_TAGS_PATH, 'w') as way_tags_file:
 
-#         nodes_writer = UnicodeDictWriter(nodes_file, NODE_FIELDS)
-#         node_tags_writer = UnicodeDictWriter(nodes_tags_file, NODE_TAGS_FIELDS)
-#         ways_writer = UnicodeDictWriter(ways_file, WAY_FIELDS)
-#         way_nodes_writer = UnicodeDictWriter(way_nodes_file, WAY_NODES_FIELDS)
-#         way_tags_writer = UnicodeDictWriter(way_tags_file, WAY_TAGS_FIELDS)
+        nodes_writer = UnicodeDictWriter(nodes_file, NODE_FIELDS)
+        node_tags_writer = UnicodeDictWriter(nodes_tags_file, NODE_TAGS_FIELDS)
+        ways_writer = UnicodeDictWriter(ways_file, WAY_FIELDS)
+        way_nodes_writer = UnicodeDictWriter(way_nodes_file, WAY_NODES_FIELDS)
+        way_tags_writer = UnicodeDictWriter(way_tags_file, WAY_TAGS_FIELDS)
 
-#         nodes_writer.writeheader()
-#         node_tags_writer.writeheader()
-#         ways_writer.writeheader()
-#         way_nodes_writer.writeheader()
-#         way_tags_writer.writeheader()
+        nodes_writer.writeheader()
+        node_tags_writer.writeheader()
+        ways_writer.writeheader()
+        way_nodes_writer.writeheader()
+        way_tags_writer.writeheader()
 
-#         validator = cerberus.Validator()
+        validator = cerberus.Validator()
 
-#         for element in get_element(file_in, tags=('node', 'way')):
-#             el = shape_element(element)
-#             if el:
-#                 if validate is True:
-#                     validate_element(el, validator)
+        for element in get_element(file_in, tags=('node', 'way')):
+            el = shape_element(element)
+            if el:
+                if validate is True:
+                    validate_element(el, validator)
 
-#                 if element.tag == 'node':
-#                     nodes_writer.writerow(el['node'])
-#                     node_tags_writer.writerows(el['node_tags'])
-#                 elif element.tag == 'way':
-#                     ways_writer.writerow(el['way'])
-#                     way_nodes_writer.writerows(el['way_nodes'])
-#                     way_tags_writer.writerows(el['way_tags'])
+                if element.tag == 'node':
+                    nodes_writer.writerow(el['node'])
+                    node_tags_writer.writerows(el['node_tags'])
+                elif element.tag == 'way':
+                    ways_writer.writerow(el['way'])
+                    way_nodes_writer.writerows(el['way_nodes'])
+                    way_tags_writer.writerows(el['way_tags'])
 
 
-# if __name__ == '__main__':
-#     # Note: Validation is ~ 10X slower. For the project consider using a small
-#     # sample of the map when validating.
-#     process_map(OSM_PATH, validate=True)
+if __name__ == '__main__':
+    # Note: Validation is ~ 10X slower. For the project consider using a small
+    # sample of the map when validating.
+    process_map(OSM_PATH, validate=True)
 
