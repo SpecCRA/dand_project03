@@ -367,7 +367,6 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 else:
                     temp_dict['value'] = i.attrib['v']
             tags.append(temp_dict)
-        print tags
 
         for counter, i in enumerate(element.iter('nd')):
             temp_dict = {}
