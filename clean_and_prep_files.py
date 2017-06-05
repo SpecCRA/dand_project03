@@ -225,10 +225,12 @@ def prep_value(string):
 
     elif ";" in working_string and not "barebecue;korean": #special case 
         working_string = working_string.split(";")[0]
+        return working_string
     elif "," in working_string:
         working_string = working_string.split(",")[0]
-
-    return working_string
+        return working_string
+    else:
+        return working_string
 
 def clean_amenity_value(string):
     """

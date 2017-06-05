@@ -29,3 +29,40 @@ To clean the street names, I either replaced the entire street name or replaced 
 The main problem with these values is many of them are two values that refer to the same thing. Some are named vaguely or different such as "dimsum" and "dim_sum" or variations of singular and plural versions of the word. I also made notes of typos and removed subcategories to further simplify categorizing this data.
 
 I made dictionaries to replace all the "bad" values to have a more consistent query for the same values. Some bad values that are mislabeled are removed.
+
+## Data Overview and Basic Statistics
+
+### File Sizes
+```
+4.0K	README.txt
+8.0K	audit_files.py
+ 20K	clean_and_prep_files.py
+4.0K	csv_to_db.py
+4.0K	data_wrangling_schema.sql
+502M	map_data.db
+387M	nodes.csv
+317M	nodes.db
+6.9M	nodes_tags.csv
+4.0K	presentation_notes.txt
+4.0K	project03.md
+1001M	san_francisco.osm
+4.0K	schema.pyc
+336K	sf_sunset_district.osm
+ 34M	ways.csv
+133M	ways_nodes.csv
+118M	ways_nodes.db
+ 40M	ways_tags.csv
+ ```
+
+ ### Total Nodes
+ ```
+sqlite> select COUNT(*) FROM nodes;
+```
+4840499
+
+### Total Ways
+```
+sqlite> select COUNT(*) FROM ways;
+```
+580988
+
