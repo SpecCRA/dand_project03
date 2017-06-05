@@ -49,7 +49,7 @@ with open("nodes.csv", "rb") as fin:
 
 with open ("nodes_tags.csv", "rb") as fin:
     dr = csv.DictReader(fin)
-    node_tags_db = [(i['id'], i['key'], i['value'].decode("utf-8"), i['type']) for i in dr]
+    nodes_tags_db = [(i['id'], i['key'], i['value'].decode("utf-8"), i['type']) for i in dr]
 
 with open("ways.csv", "rb") as fin:
     dr = csv.DictReader(fin)
@@ -65,10 +65,10 @@ with open("ways_nodes.csv", "rb") as fin:
 
 # Insert each value into their respective tables
 cur.executemany("INSERT INTO nodes(id, lat, lon, user, uid, version, changeset, timestamp) VALUES (?, ?, ?, ?, ?, ? ,?, ?)", nodes_db)
-cur.executemany("INSERT INTO nodes_tags(id, key, value, type) VALUES (?, ?, ?, ?);", node_tags_db)
+cur.executemany("INSERT INTO nodes_tags(id, key, value, type) VALUES (?, ?, ?, ?);", nodes_tags_db)
 cur.executemany("INSERT INTO ways(id, user, uid, version, changeset) VALUES (?, ?, ?, ?, ?);", ways_db)
 cur.executemany("INSERT INTO ways_tags(id, key, value, type) VALUES (?, ?, ?, ?)", ways_tags_db)
-cur.executemany("INSERT INTO way_nodes(id, node_id, position) VALUES (?, ?, ?)", way_nodes_db)
+cur.executemany("INSERT INTO ways_nodes(id, node_id, position) VALUES (?, ?, ?)", ways_nodes_db)
 conn.commit()
 
 #cur.execute("SELECT * FROM nodes_tags")
