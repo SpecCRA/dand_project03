@@ -240,13 +240,11 @@ def clean_amenity_value(string):
     string = prep_value(string)
     if string == "addr:housenumber" or string == "p" or string == "fixme" \
             or string == "yes":
-                return "NULL"
+                return "Ignore value"
+    elif string in amenities_corrections.keys():
+        return amenities_corrections[string]
     else:
-        try:
-            if string in amenities_corrections.keys():
-                return amenities_corrections[string]
-        except:
-            return string
+        return string
 
 def clean_shop_cuisine(corrections_dict, string):
     """
@@ -300,7 +298,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 temp_dict['id'] = element.attrib['id']
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
-                if cleaned_key == "amenity":
+                if i.attrib['k'] == "amenity":
                     if clean_amenity_value(i.attrib['v']):
                         temp_dict['value'] = clean_amenity_value(i.attrib['v'])
                     else:
@@ -310,12 +308,12 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                         temp_dict['value'] = clean_street_name(i.attrib['v'])
                     else:
                         continue
-                elif cleaned_key == "shop":
+                elif i.attrib['k'] == "shop":
                     if clean_shop_cuisine(shops_corrections, i.attrib['v']):
                         temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
                     else:
                         continue
-                elif cleaned_key == "cuisine":
+                elif i.attrib['k'] == "cuisine":
                     if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
                         temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
                     else:
@@ -346,7 +344,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 temp_dict['id'] = element.attrib['id']
                 temp_dict['key'] = cleaned_key
                 temp_dict['type'] = cleaned_type
-                if cleaned_key == "amenity":
+                if i.attrib['k'] == "amenity":
                     if clean_amenity_value(i.attrib['v']):
                         temp_dict['value'] = clean_amenity_value(i.attrib['v'])
                     else:
@@ -356,12 +354,12 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                         temp_dict['value'] = clean_street_name(i.attrib['v'])
                     else:
                         continue
-                elif cleaned_key == "shop":
+                elif i.attrib['k'] == "shop":
                     if clean_shop_cuisine(shops_corrections, i.attrib['v']):
                         temp_dict['value'] = clean_shop_cuisine(shops_corrections, i.attrib['v'])
                     else:
                         continue
-                elif cleaned_key == "cuisine":
+                elif i.attrib['k'] == "cuisine":
                     if clean_shop_cuisine(cuisines_corrections, i.attrib['v']):
                         temp_dict['value'] = clean_shop_cuisine(cuisines_corrections, i.attrib['v'])
                     else:

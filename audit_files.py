@@ -168,28 +168,28 @@ def print_values(ids, loc_values, street_names, postcodes):
     This function labels and prints out bad values for further evaluation on
     how to clean each value or kind of value.
     """
-    if len(ids) > 0:
-        for n in ids:
-            print "Bad id value: " + str(n)
-    else:
-        print "No bad IDs or UIDs."
+    # if len(ids) > 0:
+    #     for n in ids:
+    #         print "Bad id value: " + str(n)
+    # else:
+    #     print "No bad IDs or UIDs."
 
-    print "\n"
+    # print "\n"
 
-    if len(loc_values) > 0:
-        for n in loc_values:
-            print "Bad location value: " + str(n)
-    else:
-        print "No bad location values."
+    # if len(loc_values) > 0:
+    #     for n in loc_values:
+    #         print "Bad location value: " + str(n)
+    # else:
+    #     print "No bad location values."
 
-    print "\nBad street names: "
-    pprint.pprint(street_names, width=1)
+    # print "\nBad street names: "
+    # pprint.pprint(street_names, width=1)
 
-    print "\nFull street names: "
-    pprint.pprint(full_street_names, width=1)
+    # print "\nFull street names: "
+    # pprint.pprint(full_street_names, width=1)
 
-    print "\nBad postcodes: "
-    pprint.pprint(postcodes, width=2)
+    # print "\nBad postcodes: "
+    # pprint.pprint(postcodes, width=2)
 
     print "\nAmenities counts: "
     pprint.pprint(amenity_values, width=1)
