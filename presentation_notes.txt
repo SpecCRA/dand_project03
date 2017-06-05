@@ -31,6 +31,7 @@ Additional ideas
 -how many cafes
 -how many no left turns (k=restriction v=no_left_turn)
     -because san francisco is known for not being able to turn left anywhere
+-just how many starbucks are there in San Francisco?
 
 Improve data or analysis
 -narrower or broader categories for amenities or shops, some places simply require local knowledge to properly categorize

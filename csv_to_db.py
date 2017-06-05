@@ -35,17 +35,40 @@ cur.execute("""DROP TABLE IF EXISTS ways_tags""")
 cur.execute("""DROP TABLE IF EXISTS ways_nodes""")
 conn.commit()
 
+# Add all the tables to the db file!
 add_table(add_nodes)
 add_table(add_nodes_tags)
 add_table(add_ways)
 add_table(add_ways_tags)
 add_table(add_ways_nodes)
 
+# Read each csv file into a dictionary and format the data into a list of tuples
+with open("nodes.csv", "rb") as fin:
+    dr = csv.DictReader(fin)
+    nodes_db = [(i['id'], i['lat'], i['lon'], i['user'].decode("utf-8"), i['uid'], i['version'], i['changeset'], i['timestamp']) for i in dr]
+
 with open ("nodes_tags.csv", "rb") as fin:
     dr = csv.DictReader(fin)
-    node_tags_db = [(i['id'].decode("utf-8"), i['key'].decode("utf-8"), i['value'].decode("utf-8"), i['type'].decode("utf-8")) for i in dr]
+    node_tags_db = [(i['id'], i['key'], i['value'].decode("utf-8"), i['type']) for i in dr]
 
+with open("ways.csv", "rb") as fin:
+    dr = csv.DictReader(fin)
+    ways_db = [(i['id'], i['user'].decode("utf-8"), i['uid'], i['version'], i['changeset']) for i in dr]
+
+with open("ways_tags.csv", "rb") as fin:
+    dr = csv.DictReader(fin)
+    ways_tags_db = [(i['id'], i['key'], i['value'].decode("utf-8"), i['type']) for i in dr]
+
+with open("ways_nodes.csv", "rb") as fin:
+    dr = csv.DictReader(fin)
+    ways_nodes_db = [(i['id'], i['node_id'], i['position']) for i in dr]
+
+# Insert each value into their respective tables
+cur.executemany("INSERT INTO nodes(id, lat, lon, user, uid, version, changeset, timestamp) VALUES (?, ?, ?, ?, ?, ? ,?, ?)", nodes_db)
 cur.executemany("INSERT INTO nodes_tags(id, key, value, type) VALUES (?, ?, ?, ?);", node_tags_db)
+cur.executemany("INSERT INTO ways(id, user, uid, version, changeset) VALUES (?, ?, ?, ?, ?);", ways_db)
+cur.executemany("INSERT INTO ways_tags(id, key, value, type) VALUES (?, ?, ?, ?)", ways_tags_db)
+cur.executemany("INSERT INTO way_nodes(id, node_id, position) VALUES (?, ?, ?)", way_nodes_db)
 conn.commit()
 
 #cur.execute("SELECT * FROM nodes_tags")
