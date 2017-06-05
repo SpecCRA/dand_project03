@@ -54,8 +54,8 @@ I made dictionaries to replace all the "bad" values to have a more consistent qu
  40M	ways_tags.csv
  ```
 
- ### Total Nodes
- ```
+### Total Nodes
+```
 sqlite> select COUNT(*) FROM nodes;
 ```
 4840499
