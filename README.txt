@@ -1,6 +1,6 @@
-audit_files.py is the script to audit values I want to use.
+audit_files.py is used to audit the XML document.
 
-clean_and_prep_files.py cleans relevant data points and writes everything to a csv file.
+clean_and_prep_files.py cleans relevant data points and writes everything to a csv files.
 
 csv_to_db.py converts all the csv files to a single database file with "maps_data.db" as its default name.
 
