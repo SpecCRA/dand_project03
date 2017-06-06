@@ -150,7 +150,7 @@ ice_cream|72
 
 One major problem with this query is it queries amenities, shops, and cuisine categories. The categorization is unclear, and some shops may be double or even triple counted which is too bad. I hoped we'd have more ice cream shops than Starbucks in my foggy home city.
 
-## Discussion
+## Discussion and Conclusion
 
 First, my process is very obviously incomplete. Although I think I did a thorough job cleaning things such as typos and similar categorizations, there are many points I had to either remove or simply not use due to lack of reliable references. I would like to further audit and clean relation tags in order to determine how difficult it may be to drive in San Francisco. Density of one way streets is one reason driving in San Francisco is difficult. No left turns, stuck in relation tags, are another reason. 
 
