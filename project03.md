@@ -151,3 +151,9 @@ ice_cream|72
 One major problem with this query is it queries amenities, shops, and cuisine categories. The categorization is unclear, and some shops may be double or even triple counted which is too bad. I hoped we'd have more ice cream shops than Starbucks in my foggy home city.
 
 ## Discussion
+
+First, my process is very obviously incomplete. Although I think I did a thorough job cleaning things such as typos and similar categorizations, there are many points I had to either remove or simply not use due to lack of reliable references. I would like to further audit and clean relation tags in order to determine how difficult it may be to drive in San Francisco. Density of one way streets is one reason driving in San Francisco is difficult. No left turns, stuck in relation tags, are another reason. 
+
+Furthermore, it is clear from my querires, particularly about ice cream shops, that categorization of nodes needs to be more specific. I would also like to add a "district" key, so I can analyze things such as shop density in different areas of San Francisco.
+
+While there are good arguments for both narrower and broader categorizations for amenities, shops, and cuisines, this ultimately requires local knowledge to handle. In addition, my script completely removed subcategories. I can improve on my analysis by figuring out how to handle subcategories when they matter.
