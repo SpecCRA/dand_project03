@@ -30,7 +30,7 @@ The main problem with these values is many of them are two values that refer to 
 
 I made dictionaries to replace all the "bad" values to have a more consistent query for the same values. Some bad values that are mislabeled are removed.
 
-## Data Overview and Basic Statistics
+## Data Overview 
 
 ### File Sizes
 ```
@@ -66,3 +66,59 @@ sqlite> select COUNT(*) FROM ways;
 ```
 580988
 
+### Number of Unique Contributors
+```
+sqlite> SELECT COUNT(DISTINCT(e.uid))
+   ...> FROM (SELECT uid FROM nodes UNION ALL SELECT uid FROM ways) e;
+ ```
+ 2293
+
+ ### Total Amenities
+ ```
+ sqlite> SELECT key, COUNT(*)
+   ...> from nodes_tags
+   ...> where key="amenity";
+ ```
+amenity|248
+
+### Total Shops
+```
+sqlite> SELECT key, COUNT(*)
+   ...> from nodes_tags
+   ...> where key="shop";
+```
+shop|4091
+
+### Total Cuisines
+```
+sqlite> SELECT key, COUNT(*)
+   ...> from nodes_tags
+   ...> where key="cuisine";
+```
+cuisine|2128
+
+### Most Popular Cuisines
+```
+sqlite> SELECT value, COUNT(value) as total
+   ...> FROM nodes_tags
+   ...> WHERE key="cuisine"
+   ...> GROUP BY value
+   ...> ORDER BY total desc
+   ...> LIMIT 8;
+```
+```
+coffee|224
+mexican|197
+pizza|157
+chinese|147
+japanese|126
+burgers|115
+italian|115
+sandwiches|106
+```
+
+## Additional Ideas
+Percentage of one way streets
+No left turns?
+How many Starbucks can there be?
+How about ice cream shops?
