@@ -118,7 +118,36 @@ sandwiches|106
 ```
 
 ## Additional Ideas
-Percentage of one way streets
-No left turns?
-How many Starbucks can there be?
-How about ice cream shops?
+### Percentage of one way streets
+
+```
+sqlite> SELECT value, COUNT(*)
+...> FROM ways_tags
+...> WHERE key="oneway" AND value="yes";
+```
+yes|17432
+
+One of the reasons it seems difficult to drive in San Francisco is the number of one way streets. So how many do we actually have? Only makes 3%! It definitely feels like more when we commute in certain areas of the city. 
+
+### How many Starbucks can there be?
+```
+sqlite> SELECT value, COUNT(*)
+...> FROM nodes_tags
+...> WHERE value="Starbucks" OR value="Starbucks Coffee"
+...> ;
+```
+Starbucks|115
+
+This is much less than I expected. Again, it seems like there's a Starbucks on every street because that's how quickly we run out of coffee now. 
+
+### How about ice cream shops?
+```
+sqlite> SELECT value, COUNT(*)
+ ...> FROM nodes_tags
+ ...> WHERE value="ice_cream";
+ ```
+ice_cream|72
+
+One major problem with this query is it queries amenities, shops, and cuisine categories. The categorization is unclear, and some shops may be double or even triple counted which is too bad. I hoped we'd have more ice cream shops than Starbucks in my foggy home city.
+
+## Discussion

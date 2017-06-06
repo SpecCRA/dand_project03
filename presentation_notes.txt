@@ -36,3 +36,5 @@ Additional ideas
 Improve data or analysis
 -narrower or broader categories for amenities or shops, some places simply require local knowledge to properly categorize
 -ways to deal with subcategories in shops and cuisines because i oversimplified it
+        print tags
+-include relations to look into no left turns and other signaling restrictions and better idea of driving challenges in SF
