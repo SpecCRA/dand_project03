@@ -19,5 +19,4 @@ Some of the files used in this project were too large, so I have provided links 
 * Udacity's Intro to Data Wrangling course provided `data_wrangling_schema.sql`, `csv_to_db.py`, and much of the code in `clean_and_prep_files.py` to output the csv files.
 
 ## Tech
-* Python 2
-* iPython Notebooks
+* **Python 2**
